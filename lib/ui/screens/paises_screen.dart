@@ -61,6 +61,7 @@ class PaisCard extends StatelessWidget {
           context,
           MaterialPageRoute<void>(
             builder: (BuildContext context) => InfoPaisGeneral(nombrePais: nombre),
+            // EL PUSH HAY QUE CAMBIARLO A PUSH A NAV BAR (del infopais general y detalle)
           ),
         );
       },
