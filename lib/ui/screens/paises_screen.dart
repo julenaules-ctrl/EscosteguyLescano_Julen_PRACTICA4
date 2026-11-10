@@ -1,29 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:paisesgui/data/repositories/paises_repository.dart';
 import 'package:paisesgui/domain/entities/pais.dart';
+import 'package:paisesgui/ui/screens/infopais_general.dart';
 
 class PaisesScreen extends StatelessWidget {
-
   final String continente;
   PaisesScreen({required this.continente});
 
   // Referencia al repositorio, de donde obtendremos la lista de continentes
   final PaisesRepository _repository = PaisesRepository();
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: Text('Países de $continente')),
       body: Center(
-          // Proporciona a _creaLlistaPaises la lista de paises de Europa
-          child:
-              _creaListaPaises(_repository.getPaises(continente))),
+        // Proporciona a _creaLlistaPaises la lista de paises de Europa
+        child: _creaListaPaises(_repository.getPaises(continente)),
+      ),
     );
   }
 
   Widget _creaListaPaises(List<Pais> paises) {
     // Recibimos la lista de paises
-    
+
     // TO-DO
     // Debemos utilizar un ListView.builder para recorrer la lista de países
     // y generar un widget personalizado de tipo PaisCard, con la imagen y el nombre.
@@ -31,8 +31,11 @@ class PaisesScreen extends StatelessWidget {
     return ListView.builder(
       itemCount: paises.length,
       itemBuilder: (BuildContext context, int index) {
-        return PaisCard(imagen: paises[index].imagen ?? '', nombre: paises[index].nombre);
-      }
+        return PaisCard(
+          imagen: paises[index].imagen ?? '',
+          nombre: paises[index].nombre,
+        );
+      },
     );
   }
 }
@@ -40,11 +43,7 @@ class PaisesScreen extends StatelessWidget {
 class PaisCard extends StatelessWidget {
   // Este widget recibirá dos argumentos con nombre para construirse:
   // la imagen (imagen) y el nombre del país (nombre)
-  const PaisCard({
-    super.key,
-    required this.imagen,
-    required this.nombre,
-  });
+  const PaisCard({super.key, required this.imagen, required this.nombre});
 
   final String imagen;
   final String nombre;
@@ -55,25 +54,33 @@ class PaisCard extends StatelessWidget {
     // Devuelve un widget de tipo Card, con el diseño que desees, pero
     // que muestre la imagen  (obtenida de Internet a partir de la url)
     // y el nombre del país.
-    
-    return Card(
-      
-      // Bordes redondeados de la Card
-      clipBehavior: Clip.antiAlias,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15.0),
-      ),
-      child: Stack(
-        children: [
-          Image.network(
-            imagen,
-            height: 200,
-            // Para que sea igual de grande que el contenedo
-            width: double.infinity,
-            // Recorta la imagen para que en todos las Cards Ocupen todo ocupen todo
-            fit: BoxFit.cover, 
+
+    return GestureDetector(
+      onTap: () {
+        Navigator.push<void>(
+          context,
+          MaterialPageRoute<void>(
+            builder: (BuildContext context) => InfoPaisGeneral(nombrePais: nombre),
           ),
-          Positioned(
+        );
+      },
+      child: Card(
+        // Bordes redondeados de la Card
+        clipBehavior: Clip.antiAlias,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+        child: Stack(
+          children: [
+            Image.network(
+              imagen,
+              height: 200,
+              // Para que sea igual de grande que el contenedo
+              width: double.infinity,
+              // Recorta la imagen para que en todos las Cards Ocupen todo ocupen todo
+              fit: BoxFit.cover,
+            ),
+            Positioned(
               bottom: 40,
               left: 40,
               child: Text(
@@ -82,7 +89,8 @@ class PaisCard extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
             ),
-        ],
+          ],
+        ),
       ),
     );
   }

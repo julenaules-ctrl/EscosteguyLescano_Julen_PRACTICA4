@@ -4,7 +4,8 @@ import 'package:paisesgui/data/repositories/paises_repository.dart';
 import 'package:paisesgui/domain/entities/pais.dart';
 
 class InfoPaisGeneral extends StatelessWidget {
-  InfoPaisGeneral({super.key});
+  final String nombrePais;
+  InfoPaisGeneral({super.key, required this.nombrePais});
 
     // Referencia al repositorio, de donde obtendremos la lista de continentes
   final PaisesRepository _repository = PaisesRepository();
@@ -14,7 +15,7 @@ class InfoPaisGeneral extends StatelessWidget {
   Widget build(BuildContext context) {
 
     // Recogemos el país del repositorio
-    Pais pais = _repository.infoPais();
+    Pais? pais = _repository.infoPais(nombrePais);
     
     // TO-DO
     // Añadir la información siguiente sobre el país:
@@ -25,6 +26,7 @@ class InfoPaisGeneral extends StatelessWidget {
     // Para comprobar que no os salís, podéis probar a girar el dispositivo (si lo estáis haciendo sobre Android)
 
     return Scaffold(
+        appBar: AppBar(title: Text('Información General')),
         body: SingleChildScrollView(
           child:
         Container (
@@ -36,13 +38,13 @@ class InfoPaisGeneral extends StatelessWidget {
               padding: const EdgeInsets.all(.0),
               child: 
                 Image.network(
-                pais.imagen ?? ''
+                pais?.imagen ?? ''
               ),
             ),
             Row(
               children:  [
                 Text(
-                  pais.nombre,
+                  pais?.nombre ?? '',
                   style: const TextStyle(fontSize: 25),
                   textAlign: TextAlign.left,
                 ),
@@ -52,7 +54,7 @@ class InfoPaisGeneral extends StatelessWidget {
               padding: const EdgeInsets.only(left: 10, bottom: 30),
               child: 
               Text(
-                "Capital: ${pais.capital ?? ''}",
+                "Capital: ${pais?.capital ?? ''}",
                 style: const TextStyle(fontSize: 15),
                 textAlign: TextAlign.left,
               ),
@@ -61,7 +63,7 @@ class InfoPaisGeneral extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child:
                 Text(
-                  pais.descripcion ?? "",
+                  pais?.descripcion ?? "",
                   style: Theme.of(context).textTheme.bodySmall,
                   textAlign: TextAlign.justify,
                 ),

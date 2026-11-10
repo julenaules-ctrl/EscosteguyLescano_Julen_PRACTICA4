@@ -13,9 +13,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Material App',
       theme: temaPaises,
-      home: Scaffold(
-        body: ContinentesScreen(),
-      ),
+      home: Scaffold(body: ContinentesScreen()),
     );
   }
 }
